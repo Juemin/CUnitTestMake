@@ -1,7 +1,7 @@
 #==============================================================================
 #
 # Define base dir
-BASE_DIR= $(abspath ../../.)
+BASE_DIR=../..
 
 # User set variable options
 
@@ -19,20 +19,22 @@ BASE_DIR= $(abspath ../../.)
 INC_PATH    :=
 
 # --- Compiler flag
+CFLAGS      :=
 CPPFLAGS    :=
 CXXFLAGS    :=
+LDFLAGS     :=
 
 # --- Define depending libs' dirs
-#DEP_DIR	    := .
-	
+DEP_DIR	    := 
+
 # --- Define external libs'
 EXT_LIB	    :=
 
 # --- Link flags
 LNKFLAGS    :=
 
-# --- Use gtest
-#include $(BASE_DIR)/make/Makefile_gtest.mk
+# --- Set google test installation path
+# GTEST_DIR   = $(BASE_DIR)/../gtest
 
 # --- Default build targets.
 # .build-dep --- build object dependence files
@@ -40,12 +42,19 @@ LNKFLAGS    :=
 # .build-lib --- build current dir's export lib
 # .build-exe --- build executable
 # .runtest   --- run all built executables
-# .clean-all --- clean up
-default	:   .build-lib
+# .clean     --- clean up generated files
+# distclean  --- Remove build dir and runtest dir
+# default	:   .build-exe
+default		: .build-lib
 #
 
 # Options:
 # --- Do not make lib		: NO_MK_LIB = 1
 # --- Do not make executable	: 
 NO_MK_EXE = 1
+
+ifndef BASE_DIR
+$(error >>>>> Miss project BASE_DIR definition <<<<<)
+endif
+#
 include $(BASE_DIR)/make/load_makefile.mk

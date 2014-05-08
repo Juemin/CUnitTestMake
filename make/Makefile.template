@@ -5,8 +5,6 @@ BASE_DIR=
 
 # User set variable options
 
-# Define the build dir
-# 
 # --- Source file list
 # SRC =
 # --- Ignore files, excluded

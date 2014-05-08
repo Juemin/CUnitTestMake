@@ -32,7 +32,7 @@ include $(BASE_DIR)/make/Makefile_def.mk
 #------------------------------------------------
 # Define all source files in current directory
 # Source files, and filter out non-test source files
-# EIGNORE	=
+# IGNORE	=
 # Optional
 ifndef SRC
 SRC  = $(call FIND_SOURCE_FILES,*.cpp,$(IGNORE))
@@ -115,4 +115,3 @@ distclean-all	: distclean
 .PHONY	: distclean disclean-all
 #----------------------------------------------
 endif
-#	alldirs=

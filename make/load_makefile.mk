@@ -78,6 +78,11 @@ include $(BASE_DIR)/make/Makefile_dep.mk
 # Load make object rules 
 include $(BASE_DIR)/make/Makefile_obj.mk
 
+# Load google c/c++ unit test settings
+ifdef GTEST_DIR
+include $(BASE_DIR)/make/Makefile_gtest.mk
+endif
+
 # No make lib, pure test dir
 ifndef NO_MK_LIB
 include $(BASE_DIR)/make/Makefile_lib.mk

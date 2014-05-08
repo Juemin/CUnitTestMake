@@ -5,8 +5,9 @@
 #
 
 
-# --- Set google test installation path
-GTEST_DIR   = $(BASE_DIR)/../../gtest
+ifndef GTEST_DIR
+$(error >>>>> missing GTEST_DIR <<<<<<)
+endif
 
 # --- Add include path
 INC_PATH    += -I $(GTEST_DIR)/include

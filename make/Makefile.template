@@ -1,7 +1,7 @@
 #==============================================================================
 #
 # Define base dir
-BASE_DIR=/home/jzhang/sandbox/cpp11/cpp11test
+BASE_DIR=
 
 # User set variable options
 
@@ -50,4 +50,9 @@ LNKFLAGS    :=
 # Options:
 # --- Do not make lib		: NO_MK_LIB = 1
 # --- Do not make executable	: NO_MK_EXE = 1
+
+ifndef BASE_DIR
+$(error >>>>> Miss project BASE_DIR definition <<<<<)
+endif
+#
 include $(BASE_DIR)/make/load_makefile.mk

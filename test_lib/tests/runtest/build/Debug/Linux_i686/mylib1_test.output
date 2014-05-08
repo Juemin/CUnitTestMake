@@ -1,0 +1,14 @@
+Calling support lib func1
+Calling support sub1-lib1 func1
+Calling support sub1 lib2 func1
+Calling support sub2 lib1 func1
+Calling support lib func2
+Calling support sub1-lib1 func2
+Calling support sub1 lib2 func2
+Calling support sub2 lib1 func2
+Calling support lib2 func1
+Calling support sub1-lib1 func1
+Calling support sub1-lib1 func1
+Calling support sub1 lib2 func2
+Calling support sub2 lib1 func1
+%TEST_FINISHED% time=0

@@ -3,53 +3,106 @@ CUnitTestMake
 
 Makefile for C/C++ unit tests
 
-This repo contains makefiles used to build object files, library (archive .a) 
-files, and executables based on the source code directory structures.
+This make file system is created to simplify building object files, library 
+(archive .a) files, and executables based on the source code directory structures.
 
-The purpose of this makefile system is to allow users to add or modify 
-source code and corresponding unit tests with as few modifications in the 
-makefiles as possible, so that let developers focus on problems solving process,
- without introducing much work in specifying compile-time code dependences, or 
-link-time object files dependences, and running unit tests.  One of the benefit
-of this work is that it can automate build and test systems.
+The initial goal is to allow developers to add c/c++ unit tests for source code, 
+compile source and testing code, build executables, and carry out tests under 
+one directory by using makefile in a simple and easy way.  Developers do not 
+need to specify complicated build rules to do above, but focus on problem
+solving process, providing correct and well-tested source code.
 
-How are the source code, library .a (archive), and executable files organized.
+Developers add source code and its unit test files in a directory, the makefile 
+will compile source code, build executable, and run tests.  Developers only 
+need to specify the testing code's dependences(other than system libraries).
+
+
 --------------
 
 Source code files can be divided into two types. The first ones have
-main() function.  The second ones do not have and used to build libraries.
+main() function, and the second ones do not have and used to build libraries.
 Correspondingly, we assume object files are either used to build executables
-directly (which have main() defined), or are used to build libraries which are
-used to build other depending libraries or executables.
+directly (which have main() defined), or are used to build libraries which 
+can be used to build other depending libraries or executables.
 
 In Makefile, users have to take care of dependences. There are dependences in 
 compiling the source code to object code and dependences in linking object and 
 library files to executables.
 
 The first dependences among source code can be specified by .d file created by
-gcc using -M flags without developer specifying in make rules.
+gcc using -M flags without developer to instruct the make rules. The second 
+dependences requires developers to specify object files and libraries (static)
+in a proper order. 
 
-The second dependences requires developers to specify object files and
-libraries (static) in a proper order. 
 
 To simplify the second dependence specification, we use directory structure to
-organize object libraries.  In a directory, there is only one object library 
-file (i.e. .a file), which contains all object files compiled from the source 
-in the same source directory, and depend library objects from other directories.
-
-There is a link-time dependence between two directories, if a object file in one
-directory calls a function defined in the source code in a different directory.
-Therefore, when we build the library of the first directory, the depend
-directory's library is required to be built first, and its library objects are
-added in the depending library build.
+organize libraries.  A source code directory can multiple executable source
+(with main()), and one exporting library file (.a file) which is used to build
+build other depending libraries or executables.  This export library only 
+contains object files compiled from source code without main().
 
 Based on this simplified object dependence structure, developers only need to 
 specify directories of called functions when building executables.
 
 Certainly, developers must avoid cycle-dependence by organizing object
-libraries in the tree structure, which bears the same structure as the source
+libraries in the tree structure, which can bear the same structure as the source
 code directories.
 
+
+Usage
+==========================================
+
+1) Copy make directory to the root of your project dir, or BASE_DIR
+   Here you can overwrite some global variables in load_makefile.mk 
+   to meet your needs
+    BD_DIR:     build direcotry. Default is build/Debug/OS.
+    SUB_TEST:   test directory. Default is 
+
+
+2) In each source directory, make a copy of $(BASE_DIR)/make/Makefile.template.
+   Rename to Makefile and edit optional variables based on your needs
+
+    BASE_DIR:   root directory of project which has the make directory
+
+    SRC:        all source file in the directory.  If not specified, we will 
+                use all .c and .cpp files  
+    IGNORE:     excluding files from SRC
+
+    DEP_DIR:    depend directories, directories which have source defining the 
+                called functions
+
+    GTEST_DIR:  google unit test directory, if needed
+
+    NO_MK_LIB:  do not build library for this directory
+    NO_MK_EXE:  do not build executable for this directory
+
+
+    default:    specifying the default build target
+
+    Other compile and link options:
+    All build options are applied to all implicit building rules. If you need to add
+    compiling flags in building some object files, you need to write your own
+    explicit build rules in the Makefile to overwrite the default implicit build rules.
+    Check make/Makefile_obj.mk and and make/Makefile_exe.mk to find out how 
+    the the implicit rules are defined.
+
+
+3) Predefined build targets:
+    .build-dep: build dependence files for all source files
+    .build-obj: build object files for all sources file in the directory
+    .build-lib: build directory library file used for build executable or
+                required by building other depend library in a different directory
+                No all directories need this target, such as the unit test directory
+                which does not have depending libraries. Use NO_MK_LIB to exclude
+                the Makefile_lib.mk module.
+    .build-exe: build executables.  
+    .runtest:   run all executables built from the current directory.  The output
+                and timestamp files are written to SUB_TEST directory.
+    .clean:     Remove all built object, library, executable, and testing output
+                and timestamp files.
+    distclean:  Remove build and test directories.
+    distclean-all: distclean this directory and its all sub-directories.
+   
 
 
 

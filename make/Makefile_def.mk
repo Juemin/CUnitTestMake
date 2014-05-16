@@ -9,6 +9,7 @@ GCC ?= gcc
 GXX ?= g++
 AR  ?= ar
 
+SHELL = /bin/bash
 
 # Define test source file
 #===============================
@@ -35,6 +36,11 @@ endef
 # Define the lib name exported from the given dir
 define DEF_EXPORT_LIB
 $(1)/$(2)/lib_$(notdir $(realpath $(1)))_direxp.a
+endef
+#
+
+define DEF_LOCAL_LIB
+$(1)/$(2)/lib_$(notdir $(realpath $(1)))_local.a
 endef
 #
 

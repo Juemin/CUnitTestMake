@@ -1,12 +1,10 @@
 #==============================================================================
 #
 # Define base dir
-BASE_DIR=../.
+BASE_DIR=../..
 
 # User set variable options
 
-# Define the build dir
-# 
 # --- Source file list
 # SRC =
 # --- Ignore files, excluded
@@ -25,8 +23,8 @@ CXXFLAGS    :=
 LDFLAGS     :=
 
 # --- Define depending libs' dirs
-DEP_DIR	    := sub1 sub2
-
+DEP_DIR	    :=../sub3 ../sub4
+	
 # --- Define external libs'
 EXT_LIB	    :=
 
@@ -44,10 +42,11 @@ LNKFLAGS    :=
 # .runtest   --- run all built executables
 # .clean     --- clean up generated files
 # distclean  --- Remove build dir and runtest dir
-default	:   .build-lib
+default	:   .build-exe
 #
 
 # Options:
+# --- Do not make lib		:
 # --- Do not make executable	: NO_MK_EXE = 1
 
 ifndef BASE_DIR

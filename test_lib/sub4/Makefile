@@ -1,12 +1,10 @@
 #==============================================================================
 #
 # Define base dir
-BASE_DIR=../.
+BASE_DIR=../..
 
 # User set variable options
 
-# Define the build dir
-# 
 # --- Source file list
 # SRC =
 # --- Ignore files, excluded
@@ -25,8 +23,8 @@ CXXFLAGS    :=
 LDFLAGS     :=
 
 # --- Define depending libs' dirs
-DEP_DIR	    := sub1 sub2
-
+DEP_DIR	    :=../sub3
+	
 # --- Define external libs'
 EXT_LIB	    :=
 
@@ -48,7 +46,8 @@ default	:   .build-lib
 #
 
 # Options:
-# --- Do not make executable	: NO_MK_EXE = 1
+# --- Do not make executable	: 
+NO_MK_EXE = 1
 
 ifndef BASE_DIR
 $(error >>>>> Miss project BASE_DIR definition <<<<<)

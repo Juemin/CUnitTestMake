@@ -43,20 +43,21 @@ endif
 #endif
 #
 
+add_lib	:=
+ifdef EXP_LIB
+add_lib	:= $(EXP_LIB)
+endif
+
 # If have depend dirs, get the lib names from the dirnames and add to depend lib
 ifdef DEP_DIR
 add_lib := $(foreach p,$(DEP_DIR),$(call DEF_EXPORT_LIB,$(p),$(BD_DIR)))
-DEP_LIB += $(add_lib)
-DEP_DIR	=
-DEP_LIB := $(strip $(DEP_LIB))
-$(info Set depend lib --------- $(DEP_LIB))
 endif
 
-ifdef EXP_LIB
-ld_liba	:= $(EXP_LIB)
-else
-ld_liba	:= $(DEP_LIB)
+
+ifdef DEP_LIB
+add_lib += $(strip $(DEP_LIB))
 endif
+
 
 # link time option flags, required by gtest
 #LNKFLAGS +=
@@ -65,7 +66,7 @@ endif
 #
 .build-exe  : $(TARGET)
 
-$(BD_DIR)/% : $(BD_DIR)/%.o $(ld_liba)
+$(BD_DIR)/% : $(BD_DIR)/%.o $(add_lib)
 	@echo Link executable $@
 	$(GXX) -g $(LDFLAGS) $(LNKFLAGS) $^ -o $@
 

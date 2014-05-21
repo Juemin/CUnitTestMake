@@ -67,7 +67,7 @@ $(EXP_LIB_DI):
 	fi
 
 # Build lib dependence using implicit rule
-%_direxp.di  :
+%_direxp.di :  
 	@echo Build lib dependence $@
 	$(MAKE) -C $(call GET_LIB_DIR,$@,$(BD_DIR)) .build-lib-di
 
@@ -97,7 +97,7 @@ $(EXP_LIB)  : $(LIB_OBJ)
 # Archieve all depend lib objects and object files into one archive
 # Extract depend archive objects and re-archive with object files in current dir
 define ADD_DEP_LIB
-ar -Tcrs $(2); \
+@ar -Tcrs $(2); \
 for i in $(1); do \
     if [[ $$i == *.o ]]; then \
 	ar -Trs $(2) $$i; \
@@ -114,7 +114,7 @@ endef
 
 # remove compilation products
 .clean	    ::
-	rm -f $(EXP_LIB) $(LOCAL_LIB)
+	@rm -f $(EXP_LIB) $(LOCAL_LIB)
 
 
 PHONY: .build-lib .echo-explib .echo-libobj .clean .build-lib-local \

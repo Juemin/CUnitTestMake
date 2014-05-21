@@ -107,11 +107,19 @@ else
 distclean	:
 	rm -rf $(BD_DIR) $(SUB_TEST)
 
-distclean-all	: distclean
+.distclean-all	: distclean
 	@for d in `find -mindepth 2 -type f -name Makefile | xargs -r dirname`; do\
 	    $(MAKE) -C $$d distclean; \
 	done
 
-.PHONY	: distclean disclean-all
+.distclean-rm-build-test:
+	rm -rf build $(SUB_TEST)
+
+.distclean-rm-all: .distclean-rm-build-test
+	@for d in `find -mindepth 2 -type f -name Makefile | xargs -r dirname`; do\
+	    $(MAKE) -C $$d .distclean-rm-build-test; \
+	done
+
+.PHONY	: distclean .disclean-all .distclean-rm-all .distclean-rm-build-test
 #----------------------------------------------
 endif

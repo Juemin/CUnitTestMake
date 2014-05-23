@@ -66,14 +66,10 @@ endif
 #
 .build-exe  : $(TARGET)
 
-$(BD_DIR)/% : $(BD_DIR)/%.o $(add_lib)
+# implicit rule of building targets in build dir
+$(BD_DIR)/% : $(BD_DIR)/%.o $(add_lib) $(EXT_LIB)
 	@echo Link executable $@
 	$(GXX) -g $(LDFLAGS) $(LNKFLAGS) $^ -o $@
-
-# Build depend lib in a different dir
-%_direxp.a  :
-	@echo Build depend lib $@ - $(BD_DIR)
-	$(MAKE) -C $(call GET_LIB_DIR,$@,$(BD_DIR)) .build-lib
 
 # Preserve build lib, no deletion
 # Depend libs are intermediate files which will be deleted if not 

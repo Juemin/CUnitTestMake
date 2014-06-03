@@ -49,7 +49,6 @@ default		: .build-lib
 #
 
 # Options:
-# --- Do not make lib		: NO_MK_LIB = 1
 # --- Do not make executable	: 
 NO_MK_EXE = 1
 

@@ -44,7 +44,7 @@ LNKFLAGS    :=
 # .runtest   --- run all built executables
 # .clean     --- clean up generated files
 # distclean  --- Remove build dir and runtest dir
-default	:   .build-lib
+default	:   .build-lib-d .build-lib
 #
 
 # Options:

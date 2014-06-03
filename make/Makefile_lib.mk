@@ -44,30 +44,36 @@ endif
 #================================================================
 # Temporary inter-media dir's lib and dependence files
 LOCAL_LIB   := $(call DEF_LOCAL_LIB,.,$(BD_DIR))
+LOCAL_LIB_ABS:= $(abspath $(LOCAL_LIB)) 
 # Dir lib dependence file, including all nested libs in other dirs
 EXP_LIB_D   := $(EXP_LIB:.a=.d)
 # Temporary dependence, remove after it is done
 EXP_LIB_DI  := $(EXP_LIB:.a=.di)
 # Lib's dependence file
 DEP_LIB_DI  := $(DEP_LIB:.a=.di)
-DEP_LIB_LOCAL:= $(abspath $(DEP_LIB:direxp.a=local.a))
+DEP_LIB_LOCAL:=$(abspath $(DEP_LIB:direxp.a=local.a)) 
 
 #--------------------------------------
 # Build lib dependence. Dependence is built explicitly, no prerequisite check
 .build-lib-d: .build-lib-di
 	mv $(EXP_LIB_DI) $(EXP_LIB_D)
 
+# Target .buld-lib-di is to build a temporary dependence file to capture lib 
+#dependences among directories.  It is built based on two parts:
+# 1) the local lib dependence in the same dir
+# 2) lib dependences from other depending dirs
+# It is a recursive build process
 .build-lib-di: $(EXP_LIB_DI) $(DEP_LIB_DI)
 	$(BASE_DIR)/make/add_lib_dependence.pl $^
 
 $(EXP_LIB_DI):
-	@printf "$(EXP_LIB): "			>  $(EXP_LIB_DI);
-	@if [ ! $(DEP_LEB_ABS) ]; then \
+	@printf "$(EXP_LIB): $(LOCAL_LIB_ABS) "	> $(EXP_LIB_DI);
+	@if [ ! $(DEP_LIB) ]; then \
 	    printf "\\ \n\t$(DEP_LIB_LOCAL) \n"	>> $(EXP_LIB_DI); \
 	fi
 
 # Build lib dependence using implicit rule
-%_direxp.di :  
+%_direxp.di :
 	@echo Build lib dependence $@
 	$(MAKE) -C $(call GET_LIB_DIR,$@,$(BD_DIR)) .build-lib-di
 
@@ -82,6 +88,7 @@ $(EXP_LIB_DI):
 
 # Load lib's dependence
 -include $(EXP_LIB_D)
+
 # Build lib based on lib dependence. The prerequisite includes dir's obj files
 # and dependence lib files, containing only their dir's object files.
 $(EXP_LIB)  : $(LIB_OBJ)
@@ -116,6 +123,8 @@ endef
 .clean	    ::
 	@rm -f $(EXP_LIB) $(LOCAL_LIB)
 
+.clean-lib-dep	:
+	@rm -f $(EXP_LIB_D)
 
 PHONY: .build-lib .echo-explib .echo-libobj .clean .build-lib-local \
 	.build-lib-d .build-lib-dir

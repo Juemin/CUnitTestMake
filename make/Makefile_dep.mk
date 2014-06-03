@@ -30,7 +30,7 @@ $(info Source obj dependences - $(DEP))
 #==============================================================================
 
 # Build all dependence files in current directory
-.build-dep  : $(DEP)
+.build-obj-dep  : $(DEP)
 
 # Pre-requirement
 $(DEP)	: | $(BD_DIR)
@@ -47,10 +47,10 @@ $(BD_DIR)/%.d	: %.c   | $(BD_DIR)
 # No remove depend for .clean-all, after obj depend files are created
 # .d file will be updated when only .c / .cpp source files are changed
 # Force to clean dependence files, only in very few extreme cases
-.clean-depend  ::
+.clean-obj-dep  ::
 	rm -f $(DEP)
 
-.PHONY: .build-depend
+.PHONY: .build-obj-dep .clean-obj-dep
 
 
 # COMPILE_DEPENDENCE: src target
@@ -70,7 +70,7 @@ $(BD_DIR)/%.d	: %.c   | $(BD_DIR)
 
 define COMPILE_DEPENDENCE
 @echo create dependence file for $(1)
-$(GCC) $(CPPFLAGS) -c -E -M -MT $(3) -MM -MP -MF $(2) $(INC_PATH) $(1)
+$(GCC) $(CPPFLAGS) -c -E -M -MT $(3) -MM -MP -MF $(2) $(INC_OPT) $(1)
 endef
 
 #@mv -f $(3) $(3).tmp

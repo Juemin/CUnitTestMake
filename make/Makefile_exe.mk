@@ -37,12 +37,6 @@ endif
 # In most cases, functions in lib objects are called from sub-dir or other dirs
 ##############
 
-# Add self export lib in current dir, if defined
-#ifdef EXP_LIB
-#DEP_LIB += $(EXP_LIB)
-#endif
-#
-
 add_lib	:=
 ifdef EXP_LIB
 add_lib	:= $(EXP_LIB)
@@ -64,12 +58,11 @@ endif
 
 #==============================================================================
 #
-.build-exe  : $(TARGET)
+.build-exe  : .build-lib | $(TARGET)
 
-# implicit rule of building targets in build dir
 $(BD_DIR)/% : $(BD_DIR)/%.o $(add_lib) $(EXT_LIB)
 	@echo Link executable $@
-	$(GXX) -g $(LDFLAGS) $(LNKFLAGS) $^ -o $@
+	$(GXX) -g $(LDFLAGS) $^ -o $@ $(LNKFLAGS)
 
 # Preserve build lib, no deletion
 # Depend libs are intermediate files which will be deleted if not 

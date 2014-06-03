@@ -66,12 +66,18 @@ EXE_OBJ	:= $(addsuffix .o,$(TARGET))
 # 2) Used in building lib
 LIB_OBJ	:= $(call DEF_OBJ_FILES,$(BD_DIR),$(SRC),$(EXE_OBJ))
 
+#=======================================================
 
 
 #=======================================================
 ifeq ($(findstring distclean,$(MAKECMDGOALS)),)
+# Not distclean related build
 
-#-----------------------------------------------
+# Add include path option for compilation
+ifdef INC_PATH
+INC_OPT += $(addprefix -I,$(INC_PATH))
+endif
+
 # Load make dependence file
 include $(BASE_DIR)/make/Makefile_dep.mk
 
@@ -84,9 +90,7 @@ include $(BASE_DIR)/make/Makefile_gtest.mk
 endif
 
 # No make lib, pure test dir
-ifndef NO_MK_LIB
 include $(BASE_DIR)/make/Makefile_lib.mk
-endif
 
 # No make executable and no loading Makefile_run.mk
 ifndef NO_MK_EXE

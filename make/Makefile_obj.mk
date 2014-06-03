@@ -43,10 +43,10 @@ endif
 $(BD_DIR)/%.o	: $(BD_DIR)/%.d
 
 $(BD_DIR)/%.o	: %.cpp
-	$(GXX) -c $(CPPFLAGS) $(CXXFLAGS) $(INC_PATH) $(CFLAGS) $< -o $@
+	$(GXX) -c $(CPPFLAGS) $(CXXFLAGS) $(INC_OPT) $(CFLAGS) $< -o $@
 
 $(BD_DIR)/%.o	: %.c
-	$(GCC) -c $(CPPFLAGS) $(INC_PATH) $(CFLAGS) $< -o $@
+	$(GCC) -c $(CPPFLAGS) $(INC_OPT) $(CFLAGS) $< -o $@
 
 # remove compilation products
 .clean		::

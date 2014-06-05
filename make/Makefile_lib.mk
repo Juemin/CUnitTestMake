@@ -34,8 +34,7 @@ endif
 
 # If have depend dirs, get the lib names from the dirnames and add to depend lib
 ifdef DEP_DIR
-add_lib	    := $(foreach p,$(DEP_DIR),$(call DEF_EXPORT_LIB,$(p),$(BD_DIR)))
-DEP_LIB	    += $(add_lib)
+DEP_LIB    := $(foreach p,$(DEP_DIR),$(call DEF_EXPORT_LIB,$(p),$(BD_DIR)))
 DEP_DIR	    =
 $(info Set depend libs -------- $(DEP_LIB))
 endif
@@ -54,30 +53,52 @@ DEP_LIB_DI  := $(DEP_LIB:.a=.di)
 DEP_LIB_LOCAL:=$(abspath $(DEP_LIB:direxp.a=local.a)) 
 
 #--------------------------------------
-# Build lib dependence. Dependence is built explicitly, no prerequisite check
-.build-lib-d: .build-lib-di
-	mv $(EXP_LIB_DI) $(EXP_LIB_D)
+# Build lib dependence file. 
+# This file specifies the prerequisite and rule to build the library for 
+# exporting. It is included in $(MAKEFILE_LIST) before building the library.
+.build-dep	: $(EXP_LIB_D)
 
-# Target .buld-lib-di is to build a temporary dependence file to capture lib 
-#dependences among directories.  It is built based on two parts:
-# 1) the local lib dependence in the same dir
-# 2) lib dependences from other depending dirs
-# It is a recursive build process
-.build-lib-di: $(EXP_LIB_DI) $(DEP_LIB_DI)
+# Lib dependence file has two prerequisits.
+# 1) Initial library inter-media dependence file, which is built using the explicit
+# rule.  It contains the prerequisite and rule of building the library, however,
+# the depending library's dependences are not resolved.
+# 2) $(DEP_LIB_DI) is the list of dependence inter-media file names from the 
+# depending dirs, and they are built by using the implicit rule recursively.
+# 
+# After the two prerequisites are built, the lib dependence file is built by
+# expanding the dependence libs' inter-media files.
+# Then, the inter-media dependence file is copied to the dependence file.
+$(EXP_LIB_D)	: $(EXP_LIB_DI) $(DEP_LIB_DI)
 	$(BASE_DIR)/make/add_lib_dependence.pl $^
+	cp $(EXP_LIB_DI) $(EXP_LIB_D)
 
-$(EXP_LIB_DI):
+# Explicit rule to initialize the inter-media dependence file.  
+# Only Makefile changes, or more# specifically, the $(DEP_DIR) change, triggers 
+# its re-building.
+$(EXP_LIB_DI)	: $(MAKEFILE_LIST)
 	@printf "$(EXP_LIB): $(LOCAL_LIB_ABS) "	> $(EXP_LIB_DI);
 	@if [ ! $(DEP_LIB) ]; then \
 	    printf "\\ \n\t$(DEP_LIB_LOCAL) \n"	>> $(EXP_LIB_DI); \
 	fi
 
-# Build lib dependence using implicit rule
-%_direxp.di :
+# Implicit rule of build depending lib's inter-media dependence file.
+# We don't have a good method to monitor depending lib changes.
+%_direxp.di	:
 	@echo Build lib dependence $@
 	$(MAKE) -C $(call GET_LIB_DIR,$@,$(BD_DIR)) .build-lib-di
 
+# Target .build-lib-di is to build a temporary dependence file to capture lib 
+#dependences among directories.  It is built based on two parts:
+# 1) the local lib dependence in the same dir
+# 2) lib dependences from other depending dirs
+# It is a recursive build process
+.build-lib-di	: $(EXP_LIB_DI) $(DEP_LIB_DI)
+	$(BASE_DIR)/make/add_lib_dependence.pl $^
+
+
 #==============================================================================
+# Load lib's dependence
+-include $(EXP_LIB_D)
 
 # Build lib of dir based on lib dir's nested dependence or recursive dependence
 .build-lib  : $(EXP_LIB)
@@ -85,9 +106,6 @@ $(EXP_LIB_DI):
 # Build lib only on current dir's object files
 .build-local-lib: $(LIB_OBJ)
 	@ar -Tcrs $(LOCAL_LIB) $(LIB_OBJ)
-
-# Load lib's dependence
--include $(EXP_LIB_D)
 
 # Build lib based on lib dependence. The prerequisite includes dir's obj files
 # and dependence lib files, containing only their dir's object files.
@@ -126,5 +144,5 @@ endef
 .clean-lib-dep	:
 	@rm -f $(EXP_LIB_D)
 
-PHONY: .build-lib .echo-explib .echo-libobj .clean .build-lib-local \
-	.build-lib-d .build-lib-dir
+PHONY	: .build-lib .echo-explib .echo-libobj .clean .build-lib-local \
+	  .build-dep .build-lib-di .build-lib-dir

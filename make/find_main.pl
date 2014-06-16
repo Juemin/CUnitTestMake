@@ -35,7 +35,7 @@ sub match_main_func_line
     my ($ln) = @_;
     
     #print "testing:$ln";
-    if ($ln =~ m{^\s*(?:int|void)\s+main\s*\(.*\)} ) 
+    if ($ln =~ m{^\s*(?:int\s+|void\s+|)main\s*\(.*\)} ) 
     {
        return 1;
     }

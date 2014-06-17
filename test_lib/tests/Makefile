@@ -44,9 +44,8 @@ LNKFLAGS    :=
 # .runtest   --- run all built executables
 # .clean     --- clean up generated files
 # distclean  --- Remove build dir and runtest dir
-default	    : .build-exe
+default	    : build-exe
 #
-.build-dep
 
 # Options:
 # --- Do not make executable	: NO_MK_EXE = 1

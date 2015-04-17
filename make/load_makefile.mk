@@ -15,9 +15,9 @@ $(info Makefile starts in ----- $(abspath .))
 #--------------------------------------------------
 # Set the build dir. used to store all object, dependence and executab
 # This is global macro for all dirs
-ARCH	:= $(shell arch)
-OS	:= $(shell uname)
-BD_DIR  := build/Debug/$(OS)_$(ARCH)
+ARCH	?= $(shell arch)
+OS	?= $(shell uname | tr a-z A-Z)
+BD_DIR  ?= build/$(OS)$(ARCH)
 #
 $(info Build obj and lib in --- $(BD_DIR))
 
@@ -75,7 +75,7 @@ ifeq ($(findstring distclean,$(MAKECMDGOALS)),)
 
 # Add include path option for compilation
 ifdef INC_PATH
-INC_OPT += $(addprefix -I,$(INC_PATH))
+INC_OPT += $(addprefix -I ,$(INC_PATH))
 endif
 
 # Load make dependence file
@@ -89,7 +89,7 @@ ifdef GTEST_DIR
 include $(BASE_DIR)/make/Makefile_gtest.mk
 endif
 
-# No make lib, pure test dir
+# Load rules to build lib
 include $(BASE_DIR)/make/Makefile_lib.mk
 
 # No make executable and no loading Makefile_run.mk

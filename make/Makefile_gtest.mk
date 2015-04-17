@@ -13,9 +13,10 @@ endif
 INC_OPT    += -I $(GTEST_DIR)/include
 
 # --- Add gtest lib
-EXT_LIB	    += $(GTEST_DIR)/make/gtest_main.a
+#GTEST_LIB	= $(GTEST_DIR)/make/gtest_main.a
+EXT_LIB		+= $(GTEST_DIR)/make/gtest_main.a
 
 # --- Add gtest link flag
 LNKFLAGS    += -pthread
 
-#-------------------------------------------------- 
+#--------------------------------------------------

@@ -27,9 +27,8 @@ $(info Set executable obj ----- $(EXE_OBJ))
 endif
 
 # Define execution output files
-TEST_DIR= $(SUB_TEST)/$(BD_DIR)
-PASS_TS	= $(addprefix $(SUB_TEST)/, $(addsuffix .pass.ts,$(TARGET)))
-TEST_OUT= $(addprefix $(SUB_TEST)/, $(addsuffix .output,$(TARGET)))
+PASS_TS	= $(addsuffix .pass.ts,$(TARGET))
+TEST_OUT= $(addsuffix .output,$(TARGET))
 $(info Test pass time stamp --- $(PASS_TS))
 
 # Adding dynamic path
@@ -44,14 +43,11 @@ endif
 	rm -f $(PASS_TS) $(TEST_OUT)
 	$(MAKE) .runtest
 
-$(TEST_DIR) :
-	mkdir -p $(TEST_DIR)
-
-$(TEST_DIR)/%.pass.ts: $(BD_DIR)/% | $(TEST_DIR)
+$(BD_DIR)/%.pass.ts: $(BD_DIR)/%
 #ifdef ADD_LD_LIBRARY_PATH
 #	echo LD_LIBRARY_PATH=$(LD_LIBRARY_PATH)
 #endif
-	$(MK_DIR)/run_test.sh $^ $(TEST_DIR) $@
+	$(MK_DIR)/run_test.sh $^ $(BD_DIR) $@
 
 .add_ld_lib_path:
 	export LD_LIBRARY_PATH = $(LD_LIBRARY_PATH):$(RUN_DEP_LIB_PATH)

@@ -101,8 +101,8 @@ Usage
                 and timestamp files are written to SUB_TEST directory.
     .clean:     Remove all built object, library, executable, and testing output
                 and timestamp files.
-    distclean:
-    .distclean-all: distclean this directory and its all sub-directories.
+    distclean:  remove current unit test build directory
+    .distclean-all: remove unit test build direcotyr in current and its all sub-directories recursively.
    
 
 

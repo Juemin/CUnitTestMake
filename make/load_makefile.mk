@@ -22,13 +22,11 @@ $(info Makefile starts in ----- $(abspath .))
 # This is global macro for all dirs
 ARCH	?= $(shell arch)
 OS	?= $(shell uname | tr a-z A-Z)
-BD_DIR  ?= build/$(OS)$(ARCH)
+BD_DIR  ?= utests_buildrun/$(OS)_$(ARCH)
 #
+# test dir is same as build dir BD_DIR
+
 $(info Build obj and lib in --- $(BD_DIR))
-
-# test dir
-SUB_TEST:= runtest
-
 
 #------------------------------------------------
 # Shared definitions in all makefiles
@@ -114,7 +112,7 @@ else
 # distclean: remove build and runtest dirs recursively 
 #
 distclean	:
-	rm -rf $(BD_DIR) $(SUB_TEST)
+	rm -rf $(BD_DIR)
 
 .distclean-all	: distclean
 	@for d in `find -mindepth 2 -type f -name Makefile | xargs -r dirname`; do\
@@ -122,7 +120,7 @@ distclean	:
 	done
 
 .distclean-rm-build-test:
-	rm -rf build $(SUB_TEST)
+	rm -rf $(BD_DIR)
 
 .distclean-rm-all: .distclean-rm-build-test
 	@for d in `find -mindepth 2 -type f -name Makefile | xargs -r dirname`; do\

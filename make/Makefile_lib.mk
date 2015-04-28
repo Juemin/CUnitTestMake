@@ -94,7 +94,7 @@ DEP_LIB_LOCAL:=$(abspath $(DEP_LIB:direxp.a=local.a))
 # expanding the dependence libs' inter-media files.
 # Then, the inter-media dependence file is copied to the dependence file.
 $(EXP_LIB_D)	: $(EXP_LIB_DI) $(DEP_LIB_DI)
-		$(BASE_DIR)/make/add_lib_dependence.pl $^
+		$(MK_DIR)/add_lib_dependence.pl $^
 		cp $(EXP_LIB_DI) $(EXP_LIB_D)
 
 # Explicit rule to initialize the inter-media dependence file.  
@@ -118,7 +118,7 @@ $(EXP_LIB_DI)	: $(MAKEFILE_LIST)
 # 2) lib dependences from other depending dirs
 # It is a recursive build process
 .build-lib-d-i	: $(EXP_LIB_DI) $(DEP_LIB_DI)
-		$(BASE_DIR)/make/add_lib_dependence.pl $^
+		$(MK_DIR)/add_lib_dependence.pl $^
 
 
 #==============================================================================

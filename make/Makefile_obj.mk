@@ -36,7 +36,7 @@ endif
 # No deleting $(DEP) after they are created.
 
 #==============================================================================
-
+CFLAGS += $(VAR_DEF)
 # Test generate dependence files
 .build-obj: $(OBJ)
 

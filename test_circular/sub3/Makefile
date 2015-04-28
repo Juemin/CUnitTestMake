@@ -2,6 +2,7 @@
 #
 # Define base dir
 BASE_DIR=../..
+MK_DIR=$(BASE_DIR)/make
 
 # User set variable options
 

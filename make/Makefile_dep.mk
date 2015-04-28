@@ -7,15 +7,15 @@
 # SRC (optional)
 #   List of files to compute theirs dependence. If not defined, using *.c and *.cpp
 #
-	
+
 #### Output ####
 #
 ################
 
-# CC Compiler Flags
-#CCFLAGS	?= $(CPPFLAGS) $(CXXFLAGS) 
+# C Compiler Flags
+# CFLAGS ?= $(CFLAGS) $(CPPFLAGS) $(CXXFLAGS) 
 # Add other include path commonly shared by all dirs
-# like, INC_PATH  += -I $(BASE_DIR)/../../gtest/include
+# like, INC_PATH  += -I $(BASE_DIR)/../gtest/include
 
 # Define test source file
 # Source files are defined at the entry Makefile

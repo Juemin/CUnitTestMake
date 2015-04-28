@@ -32,13 +32,30 @@ PASS_TS	= $(addprefix $(SUB_TEST)/, $(addsuffix .pass.ts,$(TARGET)))
 TEST_OUT= $(addprefix $(SUB_TEST)/, $(addsuffix .output,$(TARGET)))
 $(info Test pass time stamp --- $(PASS_TS))
 
+# Adding dynamic path
+ifdef  ADD_LD_LIBRARY_PATH
+	ld_path := $(LD_LIBRARY_PATH)$(ADD_LD_LIBRARY_PATH)
+	export LD_LIBRARY_PATH = $(ld_path)
+endif
+
 .runtest    : $(PASS_TS)
+
+.runtest-force :
+	rm -f $(PASS_TS) $(TEST_OUT)
+	$(MAKE) .runtest
 
 $(TEST_DIR) :
 	mkdir -p $(TEST_DIR)
 
 $(TEST_DIR)/%.pass.ts: $(BD_DIR)/% | $(TEST_DIR)
-	$(BASE_DIR)/make/run_test.sh $^ $(TEST_DIR) && touch $@
+#ifdef ADD_LD_LIBRARY_PATH
+#	echo LD_LIBRARY_PATH=$(LD_LIBRARY_PATH)
+#endif
+	$(MK_DIR)/run_test.sh $^ $(TEST_DIR) $@
+
+.add_ld_lib_path:
+	export LD_LIBRARY_PATH = $(LD_LIBRARY_PATH):$(RUN_DEP_LIB_PATH)
+
 
 # remove test output and timestamp
 .clean-run  :

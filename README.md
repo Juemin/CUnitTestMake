@@ -62,7 +62,8 @@ Usage
 2) In each source directory, make a copy of $(BASE_DIR)/make/Makefile.template.
    Rename to Makefile and edit optional variables based on your needs
 
-    BASE_DIR:   root directory of project which has the make directory
+    BASE_DIR:   root directory of project 
+    MK_DIR:     CUnitTest makefile directory
 
     SRC:        all source file in the directory.  If not specified, we will 
                 use all .c and .cpp files  
@@ -100,8 +101,8 @@ Usage
                 and timestamp files are written to SUB_TEST directory.
     .clean:     Remove all built object, library, executable, and testing output
                 and timestamp files.
-    distclean:  Remove build and test directories.
-    distclean-all: distclean this directory and its all sub-directories.
+    distclean:
+    .distclean-all: distclean this directory and its all sub-directories.
    
 
 

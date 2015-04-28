@@ -8,6 +8,11 @@
 ifndef BASE_DIR
 $(error >>>>> Miss project BASE_DIR definition <<<<<)
 endif
+
+ifndef MK_DIR
+$(error >>>>> Miss CUnitTest Maefile dir definition <<<<<)
+endif
+
 #
 $(info Project base ----------- $(BASE_DIR))
 $(info Makefile starts in ----- $(abspath .))
@@ -27,7 +32,7 @@ SUB_TEST:= runtest
 
 #------------------------------------------------
 # Shared definitions in all makefiles
-include $(BASE_DIR)/make/Makefile_def.mk
+include $(MK_DIR)/Makefile_def.mk
 
 #------------------------------------------------
 # Define all source files in current directory
@@ -79,26 +84,26 @@ INC_OPT += $(addprefix -I ,$(INC_PATH))
 endif
 
 # Load make dependence file
-include $(BASE_DIR)/make/Makefile_dep.mk
+include $(MK_DIR)/Makefile_dep.mk
 
 # Load make object rules 
-include $(BASE_DIR)/make/Makefile_obj.mk
+include $(MK_DIR)/Makefile_obj.mk
 
 # Load google c/c++ unit test settings
 ifdef GTEST_DIR
-include $(BASE_DIR)/make/Makefile_gtest.mk
+include $(MK_DIR)/Makefile_gtest.mk
 endif
 
 # Load rules to build lib
-include $(BASE_DIR)/make/Makefile_lib.mk
+include $(MK_DIR)/Makefile_lib.mk
 
 # No make executable and no loading Makefile_run.mk
 ifndef NO_MK_EXE
-include $(BASE_DIR)/make/Makefile_exe.mk
+include $(MK_DIR)/Makefile_exe.mk
 
 ifneq ($(or $(findstring .runtest,$(MAKECMDGOALS)),\
 	    $(findstring .clean,$(MAKECMDGOALS))),)
-include $(BASE_DIR)/make/Makefile_run.mk
+include $(MK_DIR)/Makefile_run.mk
 
 endif
 endif

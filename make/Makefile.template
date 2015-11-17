@@ -16,12 +16,13 @@ DBG1		:=
 #
 
 # --- Source file list
-SRC =
+SRC 	:=
 # --- Ignore files, excluded
-IGNORE	=
+IGNORE	:=
 
 # --- Load google test module
-GTEST_DIR	:= $(BASE_DIR)/../gtest
+GTEST_DIR	:=
+#sth like $(BASE_DIR)/../gtest
 
 # --- Set included path used for compiling
 INC_PATH    :=

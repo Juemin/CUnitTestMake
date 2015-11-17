@@ -121,7 +121,7 @@ AR  	?= ar
 ARCH	?= $(shell arch)
 OS		?= $(shell uname | tr a-z A-Z)
 #BIN_DIR	?= bin/$(OS)_$(ARCH)
-UMAKE	:= $(MAKE) -f $(firstword $(MAKEFILE_LIST)) -s
+UMAKE	:= $(MAKE) -f $(firstword $(MAKEFILE_LIST))
 
 #-------------------------------------------------------------------
 # Add additional flags/options for compile

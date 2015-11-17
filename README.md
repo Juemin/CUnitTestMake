@@ -87,9 +87,10 @@ Usage
      distclean    : remove bin directory of local dir
      distclean-all: remove all bin directories under BASE_DIR
 
-5) Some makefile modules are also available but under experiements.
-   Makefile_tag.mk  : makefile module to build tag and cscope
-   Makefile_sh.mk   : makefile module to run shell scripts
+5) Some makefile modules are also included but they are still under experiment.
+
+     Makefile_tag.mk  : makefile module to build tag and cscope
+     Makefile_sh.mk   : makefile module to run shell scripts
 
 
 

@@ -48,6 +48,7 @@ Usage
       GTEST_DIR : if defined, used as google test installed directory.
 
 4) Option variables
+
       BIN_ROOT  : if specified, we will store all generated files in a same
                   source code directory-tree structure under it.  If not, bin
                   directory is under its source directory (Default).
@@ -64,26 +65,27 @@ Usage
 
 
 4) List of some predefined target and short keys
-   default      : build-exe, building all executables
 
-   build-dep
-   dep          : build dependence rules if DEP_DIR is specified
+      default   : build-exe, building all executables
+
+      build-dep :
+      dep       : build dependence rules if DEP_DIR is specified
    
-   build-lib
-   lib          : build directory libraries in local and DEP_DIR directories.
+      build-lib :
+      lib       : build directory libraries in local and DEP_DIR directories.
 
-   build-exe
-   exe          : build executables
+      build-exe :
+      exe       : build executables
 
-   runtest
-   run          : run all executables built from the current directory. Since
+      runtest   :
+      run       : run all executables built from the current directory. Since
                   the makefile system is original used for unit testing, no
                   execution arguments are passed. 
 
-   clean        : remove generated files from building and testing.
+     clean      : remove generated files from building and testing.
 
-   distclean    : remove bin directory of local dir
-   distclean-all: remove all bin directories under BASE_DIR
+     distclean    : remove bin directory of local dir
+     distclean-all: remove all bin directories under BASE_DIR
 
 5) Some makefile modules are also available but under experiements.
    Makefile_tag.mk  : makefile module to build tag and cscope

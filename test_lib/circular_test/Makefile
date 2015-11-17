@@ -1,8 +1,9 @@
 #==============================================================================
 #
 # Define base dir
-BASE_DIR=../..
-MK_DIR=$(BASE_DIR)/make
+BASE_DIR	:= ../..
+MK_DIR		:= $(BASE_DIR)/make
+DBG		:= 1
 
 # User set variable options
 
@@ -36,14 +37,14 @@ LNKFLAGS    :=
 # GTEST_DIR   = $(BASE_DIR)/../gtest
 
 # --- Default build targets.
-# .build-dep --- build object dependence files
-# .build-obj --- build object files
-# .build-lib --- build current dir's export lib
-# .build-exe --- build executable
-# .runtest   --- run all built executables
-# .clean     --- clean up generated files
+# build-dep --- build object dependence files
+# build-obj --- build object files
+# build-lib --- build current dir's export lib
+# build-exe --- build executable
+# runtest   --- run all built executables
+# clean     --- clean up generated files
 # distclean  --- Remove build dir and runtest dir
-default	:   .build-exe
+default	:   build-exe
 #
 
 # Options:
@@ -54,4 +55,4 @@ ifndef BASE_DIR
 $(error >>>>> Miss project BASE_DIR definition <<<<<)
 endif
 #
-include $(BASE_DIR)/make/load_makefile.mk
+include $(MK_DIR)/load_makefile.mk

@@ -4,6 +4,8 @@
 BASE_DIR=../..
 MK_DIR=$(BASE_DIR)/make
 
+#DBG	:=1
+#BUILD_DEP:=true
 # User set variable options
 
 # Define the build dir
@@ -45,7 +47,7 @@ LNKFLAGS    :=
 # .runtest   --- run all built executables
 # .clean     --- clean up generated files
 # distclean  --- Remove build dir and runtest dir
-default	:   .build-exe
+default	:   build-exe
 #
 
 # Options:

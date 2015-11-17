@@ -38,14 +38,14 @@ LNKFLAGS    :=
 # GTEST_DIR   = $(BASE_DIR)/../gtest
 
 # --- Default build targets.
-# .build-dep --- build object dependence files
-# .build-obj --- build object files
-# .build-lib --- build current dir's export lib
-# .build-exe --- build executable
-# .runtest   --- run all built executables
-# .clean     --- clean up generated files
+# build-dep --- build object dependence files
+# build-obj --- build object files
+# build-lib --- build current dir's export lib
+# build-exe --- build executable
+# runtest   --- run all built executables
+# clean     --- clean up generated files
 # distclean  --- Remove build dir and runtest dir
-default	:   .build-lib
+default	:   build-lib
 #
 
 # Options:

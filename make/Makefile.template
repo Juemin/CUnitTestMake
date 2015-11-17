@@ -1,18 +1,27 @@
+## -*- Makefile -*-
+##
+## User: jzhang
+## Time: Apr 23, 2014 10:17:57 AM
+
 #==============================================================================
 #
-# Define base dir
-BASE_DIR=
-# Define CUnitTest Makefile source dir
-MK_DIR=$(BASE_DIR)/make
-# User set variable options
+# Define base dir of the project. Can be abspath or relative path from current dir
+BASE_DIR	:=
+# Define makefile modules dir
+MK_DIR		:=$(BASE_DIR)/make
+# Define debug switch. To turn on, specify with none-emtyp string
+DBG 		:=
+DBG1		:=
+#
 
 # --- Source file list
-# SRC =
+SRC =
 # --- Ignore files, excluded
-# IGNORE	=
+IGNORE	=
 
-# --- Set target pathname
-# Use default TARGET 
+# --- Load google test module
+LOAD_GTEST	:= 1
+GTEST_DIR	:= $(BASE_DIR)/../gtest
 
 # --- Set included path used for compiling
 INC_PATH    :=
@@ -25,9 +34,13 @@ LDFLAGS     :=
 
 # --- Define depending libs' dirs
 DEP_DIR	    :=
-	
+
 # --- Define external libs'
 EXT_LIB	    :=
+# Check external libs exist, otherwise terminate.
+ifdef EXT_LIB
+$(foreach f,$(EXT_LIB), $(if $(wildcard $(f)),,$(error Cannot find external lib:$(f))))
+endif
 
 # --- Link flags
 LNKFLAGS    :=
@@ -36,14 +49,15 @@ LNKFLAGS    :=
 # GTEST_DIR   = $(BASE_DIR)/../gtest
 
 # --- Default build targets.
-# .build-dep --- build object dependence files
-# .build-obj --- build object files
-# .build-lib --- build current dir's export lib
-# .build-exe --- build executable
-# .runtest   --- run all built executables
-# .clean     --- clean up generated files
-# distclean  --- Remove build dir and runtest dir
-# default	:   .build-exe
+# build-dep --- build object dependence files
+# build-lib --- build current dir's export lib
+# build-exe --- build executable
+# runtest   --- run all built executables
+# clean     --- clean up generated files
+# distclean --- Remove bin dir and runtest dir
+# distclean-all Remove all bin dirs from BASE_DIR
+
+# default	:   build-exe
 #
 
 # Options:
@@ -52,5 +66,7 @@ LNKFLAGS    :=
 ifndef BASE_DIR
 $(error >>>>> Miss project BASE_DIR definition <<<<<)
 endif
-#
+
+#-------------------------------------------------- 
+
 include $(MK_DIR)/load_makefile.mk

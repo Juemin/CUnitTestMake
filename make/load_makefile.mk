@@ -186,7 +186,7 @@ include $(MK_DIR)/Makefile_lib.mk
 
 #-------------------------------------------------------------------
 # Load google test framework library
-ifneq ($(LOAD_GTEST),)
+ifdef GTEST_DIR
 $(if $(DBG),$(info Load gtest module ------ $(MK_DIR)/Makefile_gtest.mk))
 include $(MK_DIR)/Makefile_gtest.mk
 endif

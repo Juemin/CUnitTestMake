@@ -3,54 +3,74 @@
 ## User: jzhang
 ## Time: Apr 23, 2014 10:17:57 AM
 
-#### Input ####
-# SRC (optional)
-#   List of files to compute theirs dependence. If not defined, using *.c and *.cpp
+#==============================================================================
 #
-
-ifndef BASE_DIR
-$(error >>>>> missing BASE_DIR <<<<<<)
-endif
-
-#### Output ####
+# Link object files and libraries
 #
-################
+#==============================================================================
 
-# Define test source file
-# Source files are defined at the entry Makefile
-
+#==============================================================================
+# Defining variables
+#==============================================================================
 
 # List of target exe in tests
-ifndef TARGET
-TARGET		:= $(call DEF_TARGET_EXE,$(BD_DIR),$(SRC))
-$(info Set target executable --- $(TARGET))
-endif
+EXE_PATH	:= $(addprefix $(BIN_PATH)/,$(call DEF_EXE_NAME,$(SRC)))
+$(if $(DBG),$(info Set build executable --- $(EXE_PATH)))
 
-# List of executable/target object files, no lib objects
-ifndef EXE_OBJ
-EXE_OBJ		:= $(addsuffix .o,$(TARGET))
-$(info Set target exe obj ----- $(EXE_OBJ))
+# List of executable object files, no lib objects
+EXE_OBJ		?= $(addsuffix .o,$(EXE_PATH))
+$(if $(DBG),$(info Set executable obj ----- $(EXE_OBJ)))
+
+#==============================================================================
+# Link rule
+#==============================================================================
+# External libraries must be checked. Abort if any is missing
+# This is to avoid no matching rule for building exe
+
+# Do not load exe build rule if we don't have any executable to build
+ifneq ($(EXE_PATH),)
+
+build-exe		:  build-lib $(EXE_PATH)
+
+$(BIN_PATH)/% 	: $(BIN_PATH)/%.o $(EXP_LIB)
+	$(if $(DBG),@echo ------------------------ Link executable $@)
+	$(if $(DBG),,@)$(GXX) -g $(LDFLAGS) $+ $(EXT_LIB) -o $@ $(LNKFLAGS)
+else
+build-exe		: build-lib
 endif
 
 #==============================================================================
-#
-#.build-exe  : .build-lib | $(TARGET) Do not call .buld-lib to build exporting
-# lib, if ar does not support -T
-# Still thinking a good method to merge libraries
-#.build-exe  : .build-local-lib | $(TARGET)
-.build-exe	: .build-lib | $(TARGET)
+# remove compilation products
+#==============================================================================
+.clean-exe	:
+		$(if $(DBG),,@)rm -f $(EXE_PATH)
 
-$(BD_DIR)/% 	: $(BD_DIR)/%.o $(EXP_LIB) $(EXT_LIB)
-		@echo Link executable $@
-		$(GXX) -g $(LDFLAGS) $^ -o $@ $(LNKFLAGS)
+clean		:: .clean-exe
 
-# Preserve build lib, no deletion
-# Depend libs are intermediate files which will be deleted if not 
-# declare as .PRECIOUS or .SECONDARY
-#.PRECIOUS   : $(DEP_LIB)
+#==============================================================================
+# help and check rule
+#==============================================================================
 
-.clean		::
-		rm -f $(TARGET)
+.list-exe	:
+	@$(call PRINT_HELP_TOPIC,exe,Make targets for executables in current dir)
 
-#
-PHONY: .build-exe .clean
+
+#-----------------------------------------
+.list-ld	:
+	@echo    "Link-time lib search path -- "
+	@echo -n "                             "
+	@$(call LIST_ARGS, $(LDFLAGS))
+
+.list-lib	:
+	@echo    "Link-time static lib -------- $(EXT_LIB)"
+	@echo    "Link-time dynamic lib ------- "
+	@echo -n "                             "
+	@$(call LIST_ARGS, $(LNKFLAGS))
+
+help		:: .list-exe .list-ld .list-lib
+
+#-----------------------------------------
+.PHONY	: build-exe clean help \
+		 .clean-exe  \
+		 .list-exe .list-ld .list-lib 
+

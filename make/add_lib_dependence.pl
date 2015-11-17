@@ -48,7 +48,7 @@ sub AddDepFile
     }
     else
     {
-        print "Find circular dependence:$d\n";
+        #print "Find circular dependence:$d\n";
     }
     return 0;
 }
@@ -69,7 +69,7 @@ sub LoadFile
 
         if ( $ln =~ s{^\s*([^\s:]+)\s*:\s*\\?}{} )
         {
-            my $tf = Cwd::abs_path($1);
+            #my $tf = Cwd::abs_path($1);
             if ($target)
             {
                 #die "Different target found $tf, not $target" 
@@ -77,7 +77,7 @@ sub LoadFile
             }
             else
             { 
-                $target = $tf;
+                $target = $1;
             }
 
         }
@@ -112,7 +112,7 @@ foreach my $file (@ARGV)
     LoadFile($file);
 }
 
-$target=File::Spec->abs2rel($target);
+#$target=File::Spec->abs2rel($target);
 
 my $dst_fh;
 die "Cannot open $dst_file"

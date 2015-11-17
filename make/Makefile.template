@@ -9,7 +9,8 @@
 BASE_DIR	:=
 # Define makefile modules dir
 MK_DIR		:=$(BASE_DIR)/make
-# Define debug switch. To turn on, specify with none-emtyp string
+
+# Makefile debug switch. To turn on, specify with none-emtyp string
 DBG 		:=
 DBG1		:=
 #
@@ -24,6 +25,11 @@ GTEST_DIR	:= $(BASE_DIR)/../gtest
 
 # --- Set included path used for compiling
 INC_PATH    :=
+
+# --- Compilers
+CC  	:= gcc
+GCC 	:= gcc
+GXX 	:= g++
 
 # --- Compiler flag
 CFLAGS      :=

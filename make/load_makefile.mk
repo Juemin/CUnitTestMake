@@ -15,7 +15,7 @@ SHELL 		:= /bin/bash
 DBG			:=
 DBG1		:= 1
 # Delete dependence rule and force it to be rebuilt in next make
-DEL_LIB_DEP	:=
+DEL_LIB_DEP	:= 1
 
 
 #-------------------------------------------------- 

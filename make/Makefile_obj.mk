@@ -72,11 +72,9 @@ CFLAGS += $(VAR_DEF)
 # Load header dependence build rules
 #==============================================================================
 # No need to loading the header dependence if we building lib dependence rule
-ifneq (build-dep, $(MAKECMDGOALS))
-ifneq (build-dep-rule, $(MAKECMDGOALS))
+ifneq ($(filter-out build-dep build-dep-rule clean, $(MAKECMDGOALS)),)
 $(if $(DEB),$(info Load header-dep rules -- $(DEP)))
 -include $(DEP)
-endif
 endif
 
 #==============================================================================

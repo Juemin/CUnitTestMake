@@ -181,7 +181,8 @@ $(LIB_DEP_RULE)	:
 #---------------------------------------------------------------
 # Build dependence if not specified
 #---------------------------------------------------------------
-ifeq ($(filter build-dep .build-dep-rule .build-local-lib,$(MAKECMDGOALS)),)
+ifneq ($(filter-out build-dep .build-dep-rule .build-local-lib clean,\
+		$(MAKECMDGOALS)),)
 # Do not include dependence rule when building it
 $(if $(DBG),$(info Load lib-dep rule ------ $(EXP_LIB_RULE)))
 -include $(LIB_DEP_RULE)
@@ -243,6 +244,15 @@ clean  	:: .clean-dep .clean-lib
 .clean-lib	:
 	rm -f $(EXP_LIB) $(LOCAL_LIB)
 
+#==============================================================================
+# Fask key
+#==============================================================================
+dep	:
+	$(UMAKE) build-dep
+
+lib	:
+	$(UMAKE) build-lib
+
 #---------------------------------------------------------------
 .PRECIOUS: $(EXP_LIB) $(EXP_LIB_D) $(BUILD_DEP_TS)
 
@@ -252,7 +262,7 @@ endif # no LIB_OBJ or DEP_DIR
 #---------------------------------------------------------------
 
 #---------------------------------------------------------------
-.PHONY	: build-dep build-lib .FORCE \
+.PHONY	: build-dep build-lib dep lib .FORCE \
 	  	 .touch-build-ts .build-dep-rule  .build-local-lib \
 		  clean .clean-dep .clean-lib
 

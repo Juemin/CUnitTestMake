@@ -55,7 +55,7 @@ $(if $(DBG),$(info Set object files ------- $(call SORT_LIST,$(OBJ))))
 
 #-------------------------------------------------------------
 # Add include path option for compilation
-ifdef INC_PATH
+ifneq ($(INC_PATH) $(DEP_DIR),)
 INC_OPT += $(addprefix -I ,$(INC_PATH) $(DEP_DIR))
 endif
 

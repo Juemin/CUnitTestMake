@@ -17,14 +17,21 @@ DBG1		:=
 
 # --- Source file list
 SRC 	:=
-# --- Ignore files, excluded
+# --- Ignore files, excluded from pattern searching of current dir
 IGNORE	:=
 
 # --- Load google test module
 GTEST_DIR	:=
 #sth like $(BASE_DIR)/../gtest
 
-# --- Set included path used for compiling
+# --- Set included path used for compiling. This field should have all
+#  dirs used in compiling ( -I options ), i.e. all depending dirs which
+#  the current module depends on, including all nested dependences. 
+#  For thos dirs are specified by DEP_DIR, they are added to INC_PATH 
+#  automatically, however, their depending dirs must be added to search
+#  path explicitly.
+#  TO-DO: add include search paths of depending dirs, including nested 
+#  dependence automatically.
 INC_PATH    :=
 
 # --- Compilers
@@ -38,7 +45,8 @@ CPPFLAGS    :=
 CXXFLAGS    :=
 LDFLAGS     :=
 
-# --- Define depending libs' dirs
+# --- Define direct depending libs' dirs (no need to specify all depending nested/recusive 
+#  dirs.  The specified dirs here are added to include search path too.
 DEP_DIR	    :=
 
 # --- Define external libs'

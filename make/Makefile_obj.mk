@@ -55,14 +55,14 @@ $(if $(DBG),$(info Set object files ------- $(call SORT_LIST,$(OBJ))))
 
 #-------------------------------------------------------------
 # Add include path option for compilation
-ifneq ($(INC_PATH) $(DEP_DIR),)
-INC_OPT += $(addprefix -I ,$(INC_PATH) $(DEP_DIR))
+ifneq ($(INC_PATH) $(DEP_DIR) $(imp_inc_path),)
+INC_OPT += $(addprefix -I ,$(INC_PATH) $(DEP_DIR) $(imp_inc_path))
 endif
 
 #-------------------------------------------------------------
 # Set header dependences for each object files
 DEP	?= $(OBJ:.o=.d)
-$(if $(DBG),$(info Set obj dependenc ------ $(call SORT_LIST,$(DEP))))
+$(if $(DBG),$(info Set obj dependence ------ $(call SORT_LIST,$(DEP))))
 #
 
 #-------------------------------------------------------------
@@ -89,14 +89,17 @@ $(DEP)	: | $(BIN_PATH)
 $(BIN_PATH)   :
 	$(if $(DBG),,@)mkdir -p $@
 
-$(BIN_PATH)/%.d	: %.cpp
-	$(call COMPILE_DEPENDENCE,$<,$@,$(BIN_PATH)/$*.o)
-
-$(BIN_PATH)/%.d	: %.cc
-	$(call COMPILE_DEPENDENCE,$<,$@,$(BIN_PATH)/$*.o)
-
 $(BIN_PATH)/%.d	: %.c
-	$(call COMPILE_DEPENDENCE,$<,$@,$(BIN_PATH)/$*.o)
+$(BIN_PATH)/%.d	: %.cc
+$(BIN_PATH)/%.d	: %.cpp
+	$(GCC) $(CPPFLAGS) -c -E -M -MT $(BIN_PATH)/$*.o -MM -MP -MF $@ $(INC_OPT) $<
+
+#$(call COMPILE_DEPENDENCE,$<,$@,$(BIN_PATH)/$*.o)
+
+#	$(call COMPILE_DEPENDENCE,$<,$@,$(BIN_PATH)/$*.o)
+
+#$(BIN_PATH)/%.d	: %.c
+#	$(call COMPILE_DEPENDENCE,$<,$@,$(BIN_PATH)/$*.o)
 
 
 #==============================================================================

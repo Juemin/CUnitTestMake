@@ -32,8 +32,8 @@ GTEST_DIR	:=
 #  path explicitly.
 #  TO-DO: add include search paths of depending dirs, including nested 
 #  dependence automatically.
-INC_PATH    :=
-
+INC_PATH    = $(EXP_INC_PATH)
+INC_OPT		=
 # --- Compilers
 CC  	:= gcc
 GCC 	:= gcc
@@ -71,7 +71,7 @@ LNKFLAGS    :=
 # distclean --- Remove bin dir and runtest dir
 # distclean-all Remove all bin dirs from BASE_DIR
 
-# default	:   build-exe
+default			: build-exe
 #
 
 # Options:

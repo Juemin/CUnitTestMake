@@ -38,7 +38,7 @@ $(if $(DBG),$(info Makefile starts in ----- $(abspath .)))
 #==============================================================================
 ifeq ($(MAKECMDGOALS),)
 MAKECMDGOALS:= build-exe
-default		: build-exe
+#default		: build-exe
 endif
 
 $(if $(DBG),$(info Make command goals ----- $(MAKECMDGOALS)))
@@ -165,7 +165,7 @@ endif
 
 #-------------------------------------------------------------------
 # If we have more goals other than distclean, load other modules.
-ifneq ($(if $(MAKECMDGOALS),$(filter-out distclean distclean-all, \
+ifneq ($(if $(MAKECMDGOALS),$(filter-out distclean distclean-all distclean-dep, \
 							$(MAKECMDGOALS)),1),)
 #-------------------------------------------------------------------
 # Making bin dir first
@@ -176,6 +176,7 @@ endif
 #-------------------------------------------------------------------
 # Load source object compile module
 $(if $(DBG),$(info Load obj-build module -- $(MK_DIR)/Makefile_obj.mk))
+include $(MK_DIR)/Makefile_inc.mk
 include $(MK_DIR)/Makefile_obj.mk
 
 #-------------------------------------------------------------------
@@ -221,8 +222,11 @@ distclean-all	: distclean
 	    $(UMAKE) -C $$d distclean; \
 	done
 
+distclean-dep	: distclean
+	$(foreach d, $(DEP_DIR), $(if $(DBG1),,@)pushd $(d) > /dev/null && $(UMAKE) distclean-dep && popd;)
 
-.PHONY	: distclean disclean-all cscope build-tag
+
+.PHONY	: distclean disclean-all distclean-dep cscope build-tag
 #----------------------------------------------
 
 

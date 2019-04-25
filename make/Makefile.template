@@ -32,7 +32,9 @@ GTEST_DIR	:=
 #  path explicitly.
 #  TO-DO: add include search paths of depending dirs, including nested 
 #  dependence automatically.
-INC_PATH    = $(EXP_INC_PATH)
+#  Update: done, in test and try.
+#  
+INC_PATH    =
 INC_OPT		=
 # --- Compilers
 CC  	:= gcc

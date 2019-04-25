@@ -44,6 +44,8 @@ ifndef SRC
 SRC  := $(call FIND_SOURCE_FILES,*.cpp,$(IGNORE))
 SRC  += $(call FIND_SOURCE_FILES,*.cc,$(IGNORE))
 SRC  += $(call FIND_SOURCE_FILES,*.c,$(IGNORE))
+#SRC  += $(call FIND_SOURCE_FILES,*.h,$(IGNORE))
+#SRC  += $(call FIND_SOURCE_FILES,*.hpp,$(IGNORE))
 endif
 #
 $(if $(DBG),$(info Source files ----------- $(call SORT_LIST,$(SRC))))
@@ -90,15 +92,16 @@ $(BIN_PATH)   :
 	$(if $(DBG),,@)mkdir -p $@
 
 $(BIN_PATH)/%.d	: %.c
-$(BIN_PATH)/%.d	: %.cc
 $(BIN_PATH)/%.d	: %.cpp
 	$(GCC) $(CPPFLAGS) -c -E -M -MT $(BIN_PATH)/$*.o -MM -MP -MF $@ $(INC_OPT) $<
-
-#$(call COMPILE_DEPENDENCE,$<,$@,$(BIN_PATH)/$*.o)
-
 #	$(call COMPILE_DEPENDENCE,$<,$@,$(BIN_PATH)/$*.o)
 
-#$(BIN_PATH)/%.d	: %.c
+$(BIN_PATH)/%.d	: %.cc
+	$(GCC) $(CPPFLAGS) -c -E -M -MT $(BIN_PATH)/$*.o -MM -MP -MF $@ $(INC_OPT) $<
+#	$(call COMPILE_DEPENDENCE,$<,$@,$(BIN_PATH)/$*.o)
+
+$(BIN_PATH)/%.d	: %.c
+	$(GCC) $(CPPFLAGS) -c -E -M -MT $(BIN_PATH)/$*.o -MM -MP -MF $@ $(INC_OPT) $<
 #	$(call COMPILE_DEPENDENCE,$<,$@,$(BIN_PATH)/$*.o)
 
 

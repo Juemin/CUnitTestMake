@@ -12,8 +12,8 @@
 # Set shell
 SHELL 		:= /bin/bash
 # Set debug
-DBG			:=
-DBG1		:= 1
+#DBG			:=
+#DBG1		:=
 # Delete dependence rule and force it to be rebuilt in next make
 DEL_LIB_DEP	:= 1
 
